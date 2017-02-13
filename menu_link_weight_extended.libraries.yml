@@ -1,0 +1,6 @@
+menu_link_weight_extended.tabledrag:
+  version: VERSION
+  js:
+    js/menu_link_weight_extended.tabledrag.js: {}
+  dependencies:
+    - core/drupal.tabledrag

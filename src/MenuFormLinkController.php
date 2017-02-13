@@ -7,16 +7,9 @@
 
 namespace Drupal\menu_link_weight_extended;
 
-use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\HtmlCommand;
-use Drupal\menu_ui\MenuForm as DefaultMenuFormController;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Menu\MenuLinkTreeElement;
-use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
-use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\Core\Url;
-use Drupal\menu_link_weight_extended\MenuFormController;
 
 /**
  * Class MenuFormController

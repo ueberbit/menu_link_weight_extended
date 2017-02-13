@@ -10,6 +10,7 @@ namespace Drupal\menu_link_weight_extended;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 
 class MenuSliceFormController extends MenuFormLinkController {
@@ -19,6 +20,7 @@ class MenuSliceFormController extends MenuFormLinkController {
    */
   protected $menuLink;
 
+  protected $maxDepth;
 
   protected function prepareEntity() {
     $this->menuLink = $this->getRequest()->attributes->get('menu_link');
@@ -36,6 +38,7 @@ class MenuSliceFormController extends MenuFormLinkController {
 
     // Use Menu UI adminforms
     $form['#attached']['library'][] = 'menu_ui/drupal.menu_ui.adminforms';
+    $form['#attached']['library'][] = 'menu_link_weight_extended/menu_link_weight_extended.tabledrag';
 
     // Add a link to go back to the full menu.
     $form['back_link'][] = array(
@@ -67,15 +70,6 @@ class MenuSliceFormController extends MenuFormLinkController {
       ),
       '#tabledrag' => array(
         array(
-          'action' => 'match',
-          'relationship' => 'parent',
-          'group' => 'menu-parent',
-          'subgroup' => 'menu-parent',
-          'source' => 'menu-id',
-          'hidden' => TRUE,
-          'limit' => \Drupal::menuTree()->maxDepth() - 1,
-        ),
-        array(
           'action' => 'order',
           'relationship' => 'sibling',
           'group' => 'menu-weight',
@@ -99,6 +93,7 @@ class MenuSliceFormController extends MenuFormLinkController {
       $tree_params->setActiveTrail($parents);
       $tree_params->setMinDepth(1);
       $tree_params->setMaxDepth(count($parents) + 1);
+      $this->maxDepth = count($parents) + 1;
       $this->tree = $this->getTreeFromMenuTreeParameters($tree_params);
       $this->tree = $this->filterSubtree($this->tree, $parents, $this->menuLink);
     }
@@ -116,6 +111,7 @@ class MenuSliceFormController extends MenuFormLinkController {
 
     $links = $this->buildOverviewTreeForm($this->tree, $delta);
     $this->processLinks($form, $links, $this->menuLink);
+    $this->removeDraggable($form, $links, $this->menuLink);
 
     return $form;
   }
@@ -144,6 +140,17 @@ class MenuSliceFormController extends MenuFormLinkController {
       $tree[$key]->subtree = static::filterSubtree($tree[$key]->subtree, $parents, $current_link);
     }
     return $tree;
+  }
+
+  public function removeDraggable(&$form, &$links, $menu_link) {
+    foreach (Element::children($links) as $id) {
+      if (isset($links[$id]['#item'])) {
+        $element = $links[$id];
+        if ($element['#item']->depth < $this->maxDepth - 1) {
+          $form['links'][$id]['#attributes']['class'] = array_diff($form['links'][$id]['#attributes']['class'], ['draggable']);
+        }
+      }
+    }
   }
 
 }
