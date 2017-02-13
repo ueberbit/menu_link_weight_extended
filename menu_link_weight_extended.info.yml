@@ -1,0 +1,6 @@
+name: menu_link_weight_extended
+description: My Awesome Module
+type: module
+core: 8.x
+dependencies:
+  - menu_link_weight

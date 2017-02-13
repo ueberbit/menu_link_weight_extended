@@ -1,0 +1,17 @@
+menu_link_weight_extended.menu:
+  path: '/admin/structure/menu/manage/{menu}/menu_link_weight'
+  defaults:
+    _entity_form: 'menu.edit_menu_link_weight_extended'
+    _title_callback: '\Drupal\menu_ui\Controller\MenuController::menuTitle'
+  requirements:
+    _entity_access: 'menu.update'
+    _permission: 'use menu_link_weight_extended'
+
+menu_link_weight_extended.menu_link:
+  path: 'admin/structure/menu/manage/{menu}/menu_link_weight_extended/link/{menu_link}'
+  defaults:
+    _title: 'Edit a slice of a menu'
+    _entity_form: 'menu.edit_menu_link_weight_extended_slice'
+  requirements:
+    _entity_access: 'menu.update'
+    _permission: 'use menu_link_weight_extended'
