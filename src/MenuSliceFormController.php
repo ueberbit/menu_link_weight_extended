@@ -9,6 +9,7 @@ namespace Drupal\menu_link_weight_extended;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
+use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Url;
 
 class MenuSliceFormController extends MenuFormLinkController {
@@ -91,7 +92,15 @@ class MenuSliceFormController extends MenuFormLinkController {
 
     // Get the menu tree if it's not in our property.
     if (empty($this->tree)) {
-      $this->tree = $this->getTree($depth, $this->menuLink);
+      $parents = $this->menuLinkManager->getParentIds($this->menuLink);
+      $parents[''] = '';
+      $tree_params = new MenuTreeParameters();
+      $tree_params->addExpandedParents($parents);
+      $tree_params->setActiveTrail($parents);
+      $tree_params->setMinDepth(1);
+      $tree_params->setMaxDepth(count($parents) + 1);
+      $this->tree = $this->getTreeFromMenuTreeParameters($tree_params);
+      $this->tree = $this->filterSubtree($this->tree, $parents, $this->menuLink);
     }
 
     // Determine the delta; the number of weights to be made available.
@@ -109,6 +118,32 @@ class MenuSliceFormController extends MenuFormLinkController {
     $this->processLinks($form, $links, $this->menuLink);
 
     return $form;
+  }
+
+  protected function getTreeFromMenuTreeParameters(MenuTreeParameters $tree_params) {
+   $tree = $this->menuTree->load($this->entity->id(), $tree_params);
+
+   // We indicate that a menu administrator is running the menu access check.
+   $this->getRequest()->attributes->set('_menu_admin', TRUE);
+   $manipulators = array(
+     array('callable' => 'menu.default_tree_manipulators:checkAccess'),
+     array('callable' => 'menu.default_tree_manipulators:generateIndexAndSort'),
+   );
+   $tree = $this->menuTree->transform($tree, $manipulators);
+   $this->getRequest()->attributes->set('_menu_admin', FALSE);
+
+   return $tree;
+  }
+
+  protected static function filterSubtree($tree, $parents, $current_link) {
+    // Trim tree to active trail.
+    $tree = array_filter($tree, function ($item) use ($parents, $current_link) {
+      return in_array($item->link->getPluginId(), $parents) || ($item->link->getPluginDefinition()['parent'] == $current_link);
+    });
+    foreach (array_keys($tree) as $key) {
+      $tree[$key]->subtree = static::filterSubtree($tree[$key]->subtree, $parents, $current_link);
+    }
+    return $tree;
   }
 
 }
