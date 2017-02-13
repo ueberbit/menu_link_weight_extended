@@ -7,11 +7,8 @@
 
 namespace Drupal\menu_link_weight_extended;
 
-
-use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
-use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 
 class MenuSliceFormController extends MenuFormLinkController {
@@ -109,8 +106,7 @@ class MenuSliceFormController extends MenuFormLinkController {
     $delta = max($count($this->tree), 50);
 
     $links = $this->buildOverviewTreeForm($this->tree, $delta);
-
-    $this->process_links($form, $links, $this->menuLink);
+    $this->processLinks($form, $links, $this->menuLink);
 
     return $form;
   }

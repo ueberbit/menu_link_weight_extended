@@ -76,7 +76,7 @@ class MenuFormLinkController extends MenuFormController {
    * @param $links
    * @param string $menu_link
    */
-  public function process_links(&$form, &$links, $menu_link) {
+  public function processLinks(&$form, &$links, $menu_link) {
     foreach (Element::children($links) as $id) {
       if (isset($links[$id]['#item'])) {
         $element = $links[$id];

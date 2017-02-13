@@ -110,7 +110,7 @@ class MenuFormController extends DefaultMenuFormController {
 
     $links = $this->buildOverviewTreeForm($this->tree, $delta);
 
-    $this->process_links($form, $links, $menu_link);
+    $this->processLinks($form, $links, $menu_link);
 
     return $form;
   }
@@ -168,7 +168,7 @@ class MenuFormController extends DefaultMenuFormController {
    * @param $links
    * @param $menu_link
    */
-  public function process_links(&$form, &$links, $menu_link) {
+  public function processLinks(&$form, &$links, $menu_link) {
     foreach (Element::children($links) as $id) {
       if (isset($links[$id]['#item'])) {
         $element = $links[$id];
