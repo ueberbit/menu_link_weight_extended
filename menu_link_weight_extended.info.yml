@@ -5,3 +5,4 @@ core: 8.x
 dependencies:
   - menu_link_weight
   - menu_ui
+  - cshs

@@ -74,11 +74,13 @@ function menu_link_weight_extended_form_alter(&$form, \Drupal\Core\Form\FormStat
       '#tree' => TRUE,
     );
     $form['#attached']['library'][] = 'menu_link_weight/menu_link_weight';
+    $form['#attached']['library'][] = 'menu_link_weight_extended/menu_link_weight_extended.menu_parent_selector';
 
     // Define the AJAX callback for changes in the Parent element.
     $form['menu_parent']['#ajax'] = array(
       'callback' => 'menu_link_weight_menu_ui_parent_ajax_callback',
       'wrapper' => 'menu-link-weight-wrapper',
+      'event' => 'change',
     );
 
     // This next button will not be displayed if JS is enabled.
@@ -246,4 +248,15 @@ function menu_link_weight_menu_ui_parent_ajax_callback($form, FormStateInterface
 function menu_link_weight_extended_menu_ui_set_link_weight($entity_type, $entity, $form, FormStateInterface $form_state) {
   $weight = $form_state->getValue(['menu', 'menu_link_weight', 'link_current', 'weight']);
   $entity->weight->value = $weight;
+}
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node forms.
+ */
+function menu_link_weight_extended_form_node_form_alter(&$form, FormStateInterface $form_state) {
+  // cshs has no default ajax event.
+  // @see \Drupal\Core\Render\Element\RenderElement::preRenderAjaxForm
+  if (isset($form['menu']['link']['menu_parent']['#ajax'])) {
+    $form['menu']['link']['menu_parent']['#ajax']['event'] = 'change';
+  }
 }
