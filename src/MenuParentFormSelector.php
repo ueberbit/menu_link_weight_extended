@@ -39,7 +39,7 @@ class MenuParentFormSelector extends DefaultMenuParentFormSelector {
         array('callable' => 'menu.default_tree_manipulators:generateIndexAndSort'),
       );
       $tree = $this->menuLinkTree->transform($tree, $manipulators);
-      $this->parentSelectOptionsTreeWalk($tree, $menu_name, 0, $options, $id, $depth_limit, $cacheability);
+      $this->parentSelectOptionsTreeWalk($tree, $menu_name, $menu_name . ':', $options, $id, $depth_limit, $cacheability);
     }
     return $options;
   }
