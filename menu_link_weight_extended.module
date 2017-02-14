@@ -65,35 +65,35 @@ function menu_link_weight_extended_form_alter(&$form, \Drupal\Core\Form\FormStat
       // Remove the 'table' element from the form value structure.
       '#parents' => ['menu', 'menu_link_weight'],
     );
+
+    // Define the "db_weights" element, which will hold hidden fields with
+    // the values of the menu links in the database. Upon validation we will
+    // check whether the weights are still the same as when the form was
+    // built, to make sure users won't overwrite each other's changes.
+    $form['menu']['link']['db_weights'] = array(
+      '#tree' => TRUE,
+    );
+    $form['#attached']['library'][] = 'menu_link_weight/menu_link_weight';
+
+    // Define the AJAX callback for changes in the Parent element.
+    $form['menu_parent']['#ajax'] = array(
+      'callback' => 'menu_link_weight_menu_ui_parent_ajax_callback',
+      'wrapper' => 'menu-link-weight-wrapper',
+    );
+
+    // This next button will not be displayed if JS is enabled.
+    $form['menu_link_weight_nojs'] = array(
+      '#type' => 'submit',
+      '#value' => menu_link_weight_get_button_text(),
+      // No need to validate when submitting this.
+      '#limit_validation_errors' => array(),
+      '#validate' => array(),
+      '#submit' => array('menu_link_weight_node_form_update_parent_submit'),
+      '#attributes' => ['class' => ['js-hide']],
+    );
+
+    $form['#entity_builders'][] = 'menu_link_weight_extended_menu_ui_set_link_weight';
   }
-
-  // Define the "db_weights" element, which will hold hidden fields with
-  // the values of the menu links in the database. Upon validation we will
-  // check whether the weights are still the same as when the form was
-  // built, to make sure users won't overwrite each other's changes.
-  $form['menu']['link']['db_weights'] = array(
-    '#tree' => TRUE,
-  );
-  $form['#attached']['library'][] = 'menu_link_weight/menu_link_weight';
-
-  // Define the AJAX callback for changes in the Parent element.
-  $form['menu_parent']['#ajax'] = array(
-    'callback' => 'menu_link_weight_menu_ui_parent_ajax_callback',
-    'wrapper' => 'menu-link-weight-wrapper',
-  );
-
-  // This next button will not be displayed if JS is enabled.
-  $form['menu_link_weight_nojs'] = array(
-    '#type' => 'submit',
-    '#value' => menu_link_weight_get_button_text(),
-    // No need to validate when submitting this.
-    '#limit_validation_errors' => array(),
-    '#validate' => array(),
-    '#submit' => array('menu_link_weight_node_form_update_parent_submit'),
-    '#attributes' => ['class' => ['js-hide']],
-  );
-
-  $form['#entity_builders'][] = 'menu_link_weight_extended_menu_ui_set_link_weight';
 }
 
 function menu_link_weight_extended_menu_ui_form_submit($form, FormStateInterface $form_state) {
