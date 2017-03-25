@@ -4,11 +4,3 @@ menu_link_weight_extended.tabledrag:
     js/menu_link_weight_extended.tabledrag.js: {}
   dependencies:
     - core/drupal.tabledrag
-
-menu_link_weight_extended.menu_parent_selector:
-  version: VERSION
-  css:
-    theme:
-      css/menu_link_weight_extended.menu_parent_selector.css: {}
-  dependencies:
-    - cshs/cshs.base
