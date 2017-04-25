@@ -21,3 +21,14 @@ function menu_link_weight_extended_entity_type_build(array &$entity_types) {
   $entity_types['menu']->setFormClass('edit_menu_link_weight_extended', 'Drupal\menu_link_weight_extended\MenuFormLinkController');
   $entity_types['menu']->setFormClass('edit_menu_link_weight_extended_slice', 'Drupal\menu_link_weight_extended\MenuSliceFormController');
 }
+
+/**
+ * Implements hook_menu_local_actions_alter().
+ */
+function menu_link_weight_extended_menu_local_actions_alter(&$local_actions) {
+  if (isset($local_actions['entity.menu.add_link_form'])) {
+    // Add local actions to routes provided by this module.
+    $local_actions['entity.menu.add_link_form']['appears_on'][] = 'menu_link_weight_extended.menu';
+    $local_actions['entity.menu.add_link_form']['appears_on'][] = 'menu_link_weight_extended.menu_link';
+  }
+}

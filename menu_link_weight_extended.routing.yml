@@ -5,7 +5,7 @@ menu_link_weight_extended.menu:
     _title_callback: '\Drupal\menu_ui\Controller\MenuController::menuTitle'
   requirements:
     _entity_access: 'menu.update'
-    _permission: 'use menu_link_weight_extended'
+    _permission: 'use menu link weight extended'
 
 menu_link_weight_extended.menu_link:
   path: 'admin/structure/menu/manage/{menu}/menu_link_weight_extended/link/{menu_link}'
@@ -14,4 +14,4 @@ menu_link_weight_extended.menu_link:
     _entity_form: 'menu.edit_menu_link_weight_extended_slice'
   requirements:
     _entity_access: 'menu.update'
-    _permission: 'use menu_link_weight_extended'
+    _permission: 'use menu link weight extended'

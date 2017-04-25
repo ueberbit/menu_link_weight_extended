@@ -1,5 +1,5 @@
-name: menu_link_weight_extended
-description: My Awesome Module
+name: Menu Link Weight Extended
+description: Provides a better user experience for handling large menus.
 type: module
 core: 8.x
 dependencies:
