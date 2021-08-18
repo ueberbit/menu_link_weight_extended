@@ -1,7 +1,7 @@
 name: Menu Link Weight Extended
 description: Provides a better user experience for handling large menus.
 type: module
-core: 8.x
+core_version_requirement: ^8 || ^9
 dependencies:
   - menu_link_weight
   - menu_ui

@@ -13,6 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
+use Drupal\Core\Url;
 use Drupal\menu_ui\MenuForm as DefaultMenuFormController;
 
 class MenuFormController extends DefaultMenuFormController {
@@ -87,9 +88,9 @@ class MenuFormController extends DefaultMenuFormController {
 
     // No Links available (Empty menu)
     $form['links']['#empty'] = $this->t('There are no menu links yet. <a href=":url">Add link</a>.', [
-      ':url' => $this->url('entity.menu.add_link_form', ['menu' => $this->entity->id()], [
-        'query' => ['destination' => $this->entity->url('edit-form')],
-      ]),
+      ':url' => Url::fromRoute('entity.menu.add_link_form', ['menu' => $this->entity->id()], [
+        'query' => ['destination' => $this->entity->toUrl('edit-form')->toString()],
+      ])->toString(),
     ]);
 
     // Get the menu tree if it's not in our property.
@@ -269,21 +270,6 @@ class MenuFormController extends DefaultMenuFormController {
 
     // Return the AjaxResponse Object.
     return $ajax_response;
-  }
-
-  /**
-   * Header function to print the tree.
-   * @param $tree
-   */
-  public function printTree($tree) {
-    foreach ($tree as $key => $leaf) {
-      drupal_set_message($key . " count: " . $leaf->count());
-      if ($leaf->count() > 1) {
-        drupal_set_message('---subtree---' . $key);
-        $this->printTree($leaf->subtree);
-        drupal_set_message('---endsubtree---' . $key);
-      }
-    }
   }
 
 }

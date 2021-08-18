@@ -79,9 +79,9 @@ class MenuSliceFormController extends MenuFormLinkController {
 
     // No Links available (Empty menu)
     $form['links']['#empty'] = $this->t('There are no menu links yet. <a href=":url">Add link</a>.', [
-      ':url' => $this->url('entity.menu.add_link_form', ['menu' => $this->entity->id()], [
-        'query' => ['destination' => $this->entity->url('edit-form')],
-      ]),
+      ':url' => Url::fromRoute('entity.menu.add_link_form', ['menu' => $this->entity->id()], [
+        'query' => ['destination' => $this->entity->toUrl('edit-form')->toString()],
+      ])->toString(),
     ]);
 
     // Get the menu tree if it's not in our property.
