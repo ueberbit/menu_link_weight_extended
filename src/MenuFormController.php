@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\menu_link_weight_extended\MenuFormController.
- */
-
 namespace Drupal\menu_link_weight_extended;
 
 use Drupal\Core\Ajax\AjaxResponse;
@@ -14,6 +9,7 @@ use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\menu_ui\MenuForm as DefaultMenuFormController;
 
 class MenuFormController extends DefaultMenuFormController {
@@ -37,10 +33,10 @@ class MenuFormController extends DefaultMenuFormController {
    * @param array $form
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    * @param int $depth
-   * @param string $menu_link
+   * @param \Drupal\menu_link_content\Entity\MenuLinkContent $menu_link
    * @return array
    */
-  protected function buildOverviewFormWithDepth(array &$form, FormStateInterface $form_state, $depth = 1, $menu_link = NULL) {
+  protected function buildOverviewFormWithDepth(array &$form, FormStateInterface $form_state, $depth = 1, MenuLinkContent $menu_link = NULL) {
     // Ensure that menu_overview_form_submit() knows the parents of this form
     // section.
     if (!$form_state->has('menu_overview_form_parents')) {
@@ -165,11 +161,8 @@ class MenuFormController extends DefaultMenuFormController {
 
   /**
    * Format the links appropriately so draggable views will work.
-   * @param $form
-   * @param $links
-   * @param $menu_link
    */
-  public function processLinks(&$form, &$links, $menu_link) {
+  public function processLinks(&$form, &$links, MenuLinkContent $menu_link = NULL) {
     foreach (Element::children($links) as $id) {
       if (isset($links[$id]['#item'])) {
         $element = $links[$id];
@@ -210,7 +203,7 @@ class MenuFormController extends DefaultMenuFormController {
         $mlid = (int)$links[$id]['#item']->link->getMetaData()['entity_id'];
 
         if ($form['links'][$id]['#item']->hasChildren) {
-          if (is_null($menu_link) || (isset($menu_link) && $menu_link->id() != $mlid)) {
+          if (!isset($menu_link) || ($menu_link->id() != $mlid)) {
             $form['links'][$id]['title'][] = array(
               '#type' => 'big_menu_button',
               '#title' => t('Show Children'),

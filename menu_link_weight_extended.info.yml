@@ -1,8 +1,8 @@
-name: Menu Link Weight Extended
-description: Provides a better user experience for handling large menus.
-type: module
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^9 || ^10
 dependencies:
-  - menu_link_weight
-  - menu_ui
-  - cshs
+  - cshs:cshs
+  - drupal:menu_ui
+  - menu_link_weight:menu_link_weight
+description: 'Provides a better user experience for handling large menus.'
+name: 'Menu Link Weight Extended'
+type: module

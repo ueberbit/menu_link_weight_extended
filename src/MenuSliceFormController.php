@@ -86,7 +86,7 @@ class MenuSliceFormController extends MenuFormLinkController {
 
     // Get the menu tree if it's not in our property.
     if (empty($this->tree)) {
-      $parents = $this->menuLinkManager->getParentIds($this->menuLink);
+      $parents = $this->menuLinkManager->getParentIds($this->menuLink->getPluginId());
       $parents[''] = '';
       $tree_params = new MenuTreeParameters();
       $tree_params->addExpandedParents($parents);

@@ -30,8 +30,7 @@ class MenuFormLinkController extends MenuFormController {
    * @inheritdoc
    */
   protected function buildOverviewFormWithDepth(array &$form, FormStateInterface $form_state, $depth = 1, $menu_link = NULL) {
-    $form = array();
-    array_merge($form, parent::buildOverviewFormWithDepth($form, $form_state, $depth, $menu_link));
+    $form = array_merge($form, parent::buildOverviewFormWithDepth($form, $form_state, $depth, $menu_link));
 
     $form['links']['#header'] = array(
       $this->t('Menu link'),
