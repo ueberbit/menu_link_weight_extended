@@ -85,7 +85,7 @@ class MenuFormLinkController extends MenuFormController {
         if ($form['links'][$id]['#item']->hasChildren) {
           $uri = Url::fromRoute('menu_link_weight_extended.menu_link', array(
             'menu' => $this->entity->id(),
-            'menu_link' => $element['#item']->link->getPluginId(),
+            'menu_link_plugin' => $element['#item']->link->getPluginId(),
           ));
 
           $form['links'][$id]['root'][] = array(

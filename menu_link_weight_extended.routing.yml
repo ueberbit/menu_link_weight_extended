@@ -8,10 +8,14 @@ menu_link_weight_extended.menu:
     _permission: 'use menu link weight extended'
 
 menu_link_weight_extended.menu_link:
-  path: 'admin/structure/menu/manage/{menu}/menu_link_weight_extended/link/{menu_link}'
+  path: 'admin/structure/menu/manage/{menu}/menu_link_weight_extended/link/{menu_link_plugin}'
   defaults:
     _title: 'Edit a slice of a menu'
     _entity_form: 'menu.edit_menu_link_weight_extended_slice'
   requirements:
     _entity_access: 'menu.update'
     _permission: 'use menu link weight extended'
+  options:
+    parameters:
+      menu_link_plugin:
+        type: menu_link_plugin

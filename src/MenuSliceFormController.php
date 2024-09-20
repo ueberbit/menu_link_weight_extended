@@ -8,6 +8,7 @@
 namespace Drupal\menu_link_weight_extended;
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Menu\MenuLinkInterface;
 use Drupal\Core\Menu\MenuLinkTreeElement;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
@@ -18,12 +19,12 @@ class MenuSliceFormController extends MenuFormLinkController {
   /**
    * @var \Drupal\Core\Menu\MenuLinkInterface
    */
-  protected $menuLink;
+  protected MenuLinkInterface $menuLink;
 
   protected $maxDepth;
 
   protected function prepareEntity() {
-    $this->menuLink = $this->getRequest()->attributes->get('menu_link');
+    $this->menuLink = $this->getRequest()->attributes->get('menu_link_plugin');
   }
 
   /**
@@ -95,7 +96,7 @@ class MenuSliceFormController extends MenuFormLinkController {
       $tree_params->setMaxDepth(count($parents) + 1);
       $this->maxDepth = count($parents) + 1;
       $this->tree = $this->getTreeFromMenuTreeParameters($tree_params);
-      $this->tree = $this->filterSubtree($this->tree, $parents, $this->menuLink);
+      $this->tree = $this->filterSubtree($this->tree, $parents, $this->menuLink->getPluginId());
     }
 
     // Determine the delta; the number of weights to be made available.
@@ -148,6 +149,7 @@ class MenuSliceFormController extends MenuFormLinkController {
         $element = $links[$id];
         if ($element['#item']->depth < $this->maxDepth - 1) {
           $form['links'][$id]['#attributes']['class'] = array_diff($form['links'][$id]['#attributes']['class'], ['draggable']);
+          $form['links'][$id]['weight']['#disabled'] = TRUE;
         }
       }
     }
