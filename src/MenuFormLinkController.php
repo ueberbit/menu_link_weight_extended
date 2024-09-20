@@ -10,6 +10,7 @@ namespace Drupal\menu_link_weight_extended;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 
 /**
  * Class MenuFormController
@@ -50,12 +51,9 @@ class MenuFormLinkController extends MenuFormController {
   }
 
   /**
-   * Format the links appropriately so draggable views will work.
-   * @param $form
-   * @param $links
-   * @param string $menu_link
+   * {@inheritdoc}
    */
-  public function processLinks(&$form, &$links, $menu_link) {
+  public function processLinks(&$form, &$links, MenuLinkContent $menu_link = NULL) {
     foreach (Element::children($links) as $id) {
       if (isset($links[$id]['#item'])) {
         $element = $links[$id];

@@ -110,7 +110,7 @@ class MenuSliceFormController extends MenuFormLinkController {
     $delta = max($count($this->tree), 50);
 
     $links = $this->buildOverviewTreeForm($this->tree, $delta);
-    $this->processLinks($form, $links, $this->menuLink);
+    $this->processLinks($form, $links);
     $this->removeDraggable($form, $links, $this->menuLink);
 
     return $form;
